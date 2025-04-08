@@ -34,6 +34,10 @@ def create_app():
     # Initialize the database object with the settings above. 
     app.logger.info('current_app(): starting the database connection')
     db.init_app(app)
+    
+    @app.route("/")
+    def welcome():
+        return "<h1>Skill Bridge<h1>"
 
 
     # Register the routes from each Blueprint with the app object
