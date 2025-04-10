@@ -4,7 +4,34 @@ USE SkillBridge;
 INSERT INTO majors (name) VALUES
                               ('Computer Science'),
                               ('Business Administration'),
-                              ('Mechanical Engineering');
+                              ('Mechanical Engineering')
+                              ('Biology'),
+                              ('Chemistry'),
+                              ('Physics'),
+('Mathematics'),
+('Psychology'),
+('Sociology'),
+('Economics'),
+('Political Science'),
+('English'),
+('History'),
+('Philosophy'),
+('Anthropology'),
+('Environmental Science'),
+('Engineering'),
+('Biomedical Engineering'),
+('Electrical Engineering'),
+('Civil Engineering'),
+('Marketing'),
+('Finance'),
+('Accounting'),
+('Nursing'),
+('Public Health'),
+('Education'),
+('Art History'),
+('Theater'),
+('Journalism'),
+('Neuroscience');
 
 -- Insert sample skills
 INSERT INTO skills (name) VALUES
