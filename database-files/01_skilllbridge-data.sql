@@ -145,7 +145,7 @@ INSERT INTO applications (student_id, job_id, date_applied, status) VALUES
 
 -- Insert issue reports
 INSERT INTO issue_reports (user_id, date_created, type, status, description) VALUES
-                                                                                 (1, '2025-04-01 12:00:00', 'Login Issue', 'open', 'Cannot log in to portal.'),
+                                                                                   (1, '2025-04-01 12:00:00', 'Login Issue', 'open', 'Cannot log in to portal.'),
                                                                                  (2, '2025-04-01 13:00:00', 'Resume Upload', 'resolved', 'Upload fails for PDF file.');
 
 -- Insert admin
