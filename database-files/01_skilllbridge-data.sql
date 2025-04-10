@@ -16,14 +16,47 @@ INSERT INTO skills (name) VALUES
 
 -- Insert sample users (students, advisors, admins, employers)
 INSERT INTO users (first_name, last_name, email, status, role) VALUES
-                                                                   ('Alice', 'Johnson', 'alice.johnson@example.com', 'active', 'student'),   -- id = 1
-                                                                   ('Bob', 'Smith', 'bob.smith@example.com', 'active', 'student'),          -- id = 2
-                                                                   ('Carol', 'Williams', 'carol.williams@example.com', 'active', 'advisor'),-- id = 3
-                                                                   ('David', 'Lee', 'david.lee@example.com', 'active', 'advisor'),          -- id = 4
-                                                                   ('Eve', 'Nguyen', 'eve.nguyen@example.com', 'active', 'admin'),          -- id = 5
-                                                                   ('Frank', 'Taylor', 'frank.taylor@techsolutions.com', 'active', 'employer'), -- id = 6
-                                                                   ('Grace', 'Kim', 'grace.kim@innovatecorp.com', 'active', 'employer'),       -- id = 7
-                                                                   ('Henry', 'Adams', 'henry.adams@buildright.com', 'active', 'employer');     -- id = 8
+    ('Alice', 'Johnson', 'alice.johnson@example.com', 'active', 'student'),       -- id = 1
+    ('Bob', 'Smith', 'bob.smith@example.com', 'active', 'student'),               -- id = 2
+    ('Carol', 'Williams', 'carol.williams@example.com', 'active', 'advisor'),     -- id = 3
+    ('David', 'Lee', 'david.lee@example.com', 'active', 'advisor'),               -- id = 4
+    ('Eve', 'Nguyen', 'eve.nguyen@example.com', 'active', 'admin'),               -- id = 5
+    ('Frank', 'Taylor', 'frank.taylor@techsolutions.com', 'active', 'employer'),  -- id = 6
+    ('Grace', 'Kim', 'grace.kim@innovatecorp.com', 'active', 'employer'),         -- id = 7
+    ('Henry', 'Adams', 'henry.adams@buildright.com', 'active', 'employer'),       -- id = 8
+    ('Ivy', 'Brooks', 'ivy.brooks@example.com', 'active', 'student'),             -- id = 9
+    ('Jack', 'Murphy', 'jack.murphy@example.com', 'active', 'student'),           -- id = 10
+    ('Kara', 'Danvers', 'kara.danvers@example.com', 'active', 'student'),         -- id = 11
+    ('Leo', 'Grant', 'leo.grant@example.com', 'active', 'student'),               -- id = 12
+    ('Mia', 'Hernandez', 'mia.hernandez@example.com', 'active', 'student'),       -- id = 13
+    ('Nathan', 'Scott', 'nathan.scott@example.com', 'active', 'student'),         -- id = 14
+    ('Olivia', 'Parker', 'olivia.parker@example.com', 'active', 'student'),       -- id = 15
+    ('Paul', 'Reed', 'paul.reed@example.com', 'active', 'student'),               -- id = 16
+    ('Quinn', 'Stewart', 'quinn.stewart@example.com', 'active', 'student'),       -- id = 17
+    ('Rachel', 'Cruz', 'rachel.cruz@example.com', 'active', 'student'),           -- id = 18
+    ('Sam', 'Walker', 'sam.walker@example.com', 'active', 'student'),             -- id = 19
+    ('Tina', 'Lewis', 'tina.lewis@example.com', 'active', 'student'),             -- id = 20
+    ('Uma', 'Patel', 'uma.patel@example.com', 'active', 'advisor'),               -- id = 21
+    ('Victor', 'Nguyen', 'victor.nguyen@example.com', 'active', 'advisor'),       -- id = 22
+    ('Wendy', 'Chen', 'wendy.chen@example.com', 'active', 'advisor'),             -- id = 23
+    ('Xavier', 'Lopez', 'xavier.lopez@example.com', 'active', 'advisor'),         -- id = 24
+    ('Yara', 'Moore', 'yara.moore@example.com', 'active', 'admin'),               -- id = 25
+    ('Zane', 'Carter', 'zane.carter@example.com', 'active', 'admin'),             -- id = 26
+    ('Amy', 'Jordan', 'amy.jordan@softskills.io', 'active', 'employer'),          -- id = 27
+    ('Ben', 'Thomas', 'ben.thomas@techtrail.com', 'active', 'employer'),          -- id = 28
+    ('Clara', 'Ng', 'clara.ng@creativehub.org', 'active', 'employer'),            -- id = 29
+    ('Dylan', 'Foster', 'dylan.foster@cloudstart.com', 'active', 'employer'),     -- id = 30
+    ('Elena', 'Stone', 'elena.stone@example.com', 'active', 'student'),           -- id = 31
+    ('Finn', 'Cooper', 'finn.cooper@example.com', 'active', 'student'),           -- id = 32
+    ('Gina', 'Turner', 'gina.turner@example.com', 'active', 'student'),           -- id = 33
+    ('Hank', 'Wells', 'hank.wells@example.com', 'active', 'student'),             -- id = 34
+    ('Isla', 'Morgan', 'isla.morgan@example.com', 'active', 'student'),           -- id = 35
+    ('Jon', 'Bennett', 'jon.bennett@example.com', 'active', 'student'),           -- id = 36
+    ('Kate', 'Ramos', 'kate.ramos@example.com', 'active', 'student'),             -- id = 37
+    ('Liam', 'Hayes', 'liam.hayes@example.com', 'active', 'student'),             -- id = 38
+    ('Maya', 'Evans', 'maya.evans@example.com', 'active', 'student'),             -- id = 39
+    ('Noah', 'Reyes', 'noah.reyes@example.com', 'active', 'student');             -- id = 40
+
 
 -- Insert employers (use user_id from users)
 INSERT INTO employers (user_id, company_name) VALUES
