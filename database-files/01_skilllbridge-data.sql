@@ -87,9 +87,17 @@ INSERT INTO users (first_name, last_name, email, status, role) VALUES
 
 -- Insert employers (use user_id from users)
 INSERT INTO employers (user_id, company_name) VALUES
-                                                  (6, 'Tech Solutions Inc.'),
-                                                  (7, 'Innovate Corp.'),
-                                                  (8, 'BuildRight LLC');
+(6, 'Tech Solutions Inc.'),
+(7, 'Innovate Corp.'),
+(8, 'BuildRight LLC'),
+(27, 'SoftSkills Inc.'),
+(28, 'TechTrail Corp.'),
+(29, 'CreativeHub'),
+(30, 'CloudStart Inc.'),
+(31, 'NextGen Robotics'),
+(32, 'VisionWorks'),
+(33, 'DataWave LLC');
+
 
 -- Insert job postings (employer_id refers to employers.user_id)
 INSERT INTO job_postings (employer_id, title, status, flagged, posted_date) VALUES
@@ -101,8 +109,37 @@ INSERT INTO job_postings (employer_id, title, status, flagged, posted_date) VALU
 
 -- Insert students (user_id is primary key)
 INSERT INTO students (user_id, major_id, grad_date, current_year, gpa, alumni) VALUES
-                                                                                   (1, 1, 2026, 2, 3.75, FALSE),
-                                                                                   (2, 2, 2025, 3, 3.60, FALSE);
+(1, 1, 2026, 2, 3.75, FALSE),
+(2, 2, 2025, 3, 3.60, FALSE),
+(9, 1, 2026, 2, 3.80, FALSE),
+(10, 2, 2025, 3, 3.50, FALSE),
+(11, 3, 2027, 1, 3.90, FALSE),
+(12, 1, 2026, 2, 3.70, FALSE),
+(13, 2, 2025, 3, 3.40, FALSE),
+(14, 3, 2026, 2, 3.65, FALSE),
+(15, 1, 2027, 1, 3.95, FALSE),
+(16, 2, 2025, 3, 3.55, FALSE),
+(17, 3, 2026, 2, 3.68, FALSE),
+(18, 1, 2026, 2, 3.85, FALSE),
+(19, 2, 2025, 3, 3.45, FALSE),
+(20, 3, 2026, 2, 3.60, FALSE),
+(31, 1, 2027, 1, 3.50, FALSE),
+(32, 2, 2026, 2, 3.75, FALSE),
+(33, 3, 2025, 3, 3.30, FALSE),
+(34, 1, 2027, 1, 3.92, FALSE),
+(35, 2, 2026, 2, 3.78, FALSE),
+(36, 3, 2025, 3, 3.35, FALSE),
+(37, 1, 2026, 2, 3.88, FALSE),
+(38, 2, 2025, 3, 3.42, FALSE),
+(39, 3, 2027, 1, 3.96, FALSE),
+(40, 1, 2026, 2, 3.60, FALSE),
+(21, 2, 2025, 3, 3.70, FALSE),
+(22, 1, 2026, 2, 3.80, FALSE),
+(23, 3, 2025, 3, 3.33, FALSE),
+(24, 2, 2026, 2, 3.78, FALSE),
+(25, 1, 2025, 3, 3.69, FALSE),
+(26, 3, 2027, 1, 3.85, FALSE);
+
 
 -- Insert advisors (user_id is primary key)
 INSERT INTO advisors (user_id, department) VALUES
