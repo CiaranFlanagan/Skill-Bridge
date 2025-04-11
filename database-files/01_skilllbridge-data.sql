@@ -2,12 +2,12 @@ USE SkillBridge;
 
 -- Insert sample majors
 INSERT INTO majors (name) VALUES
-                              ('Computer Science'),
-                              ('Business Administration'),
-                              ('Mechanical Engineering')
-                              ('Biology'),
-                              ('Chemistry'),
-                              ('Physics'),
+('Computer Science'),
+('Business Administration'),
+('Mechanical Engineering'),
+('Biology'),
+('Chemistry'),
+('Physics'),
 ('Mathematics'),
 ('Psychology'),
 ('Sociology'),
@@ -92,10 +92,12 @@ INSERT INTO employers (user_id, company_name) VALUES
                                                   (8, 'BuildRight LLC');
 
 -- Insert job postings (employer_id refers to employers.user_id)
-INSERT INTO job_postings (employer_id, title, status, posted_date) VALUES
-                                                                       (6, 'Software Engineer Intern', 'open', '2025-04-01 09:00:00'),
-                                                                       (7, 'Business Analyst Intern', 'open', '2025-03-25 10:30:00'),
-                                                                       (8, 'Mechanical Design Intern', 'closed', '2025-03-15 14:00:00');
+INSERT INTO job_postings (employer_id, title, status, flagged, posted_date) VALUES
+    (6, 'Software Engineer Intern', 'open', FALSE, '2025-04-01 09:00:00'),
+    (7, 'Business Analyst Intern', 'open', FALSE, '2025-03-25 10:30:00'),
+    (8, 'Mechanical Design Intern', 'closed', TRUE, '2025-03-15 14:00:00'),
+    (6, 'Data Scientist Intern', 'open', FALSE, '2025-04-05 08:00:00'),
+    (7, 'Marketing Specialist Intern', 'expired', TRUE, '2025-03-10 16:00:00');
 
 -- Insert students (user_id is primary key)
 INSERT INTO students (user_id, major_id, grad_date, current_year, gpa, alumni) VALUES

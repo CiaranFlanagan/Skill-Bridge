@@ -44,6 +44,7 @@ CREATE TABLE job_postings
     employer_id INT NOT NULL,
     title       VARCHAR(400),
     status      VARCHAR(40),
+    flagged     BOOLEAN DEFAULT FALSE,
     posted_date DATETIME,
 
     KEY idx_fk_employer_id (employer_id),
