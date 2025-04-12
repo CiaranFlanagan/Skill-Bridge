@@ -28,6 +28,7 @@ def get_jobs():
     the_response.status_code = 200
     return the_response
 
+
 @job_routes.route('/jobs/<int:job_id>/flag', methods=['POST'])
 def flag_job_posting(job_id):
     current_app.logger.info(f'POST /jobs/{job_id}/flag route')
