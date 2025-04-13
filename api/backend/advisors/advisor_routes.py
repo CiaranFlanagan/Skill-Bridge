@@ -132,4 +132,10 @@ def get_top_skills():
             ORDER BY frequency DESC
             LIMIT 10
             '''
-    
+    cursor = db.get_db().cursor()
+    cursor.execute(query)
+    skills = cursor.fetchall()
+
+    response = make_response(jsonify(skills))
+    response.status_code = 200
+    return response
