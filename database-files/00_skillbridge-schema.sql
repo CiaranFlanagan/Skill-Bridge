@@ -34,7 +34,7 @@ CREATE TABLE employers
 
     CONSTRAINT fk_employers_user
         FOREIGN KEY (user_id) REFERENCES users(id)
-            ON DELETE RESTRICT
+            ON DELETE CASCADE
             ON UPDATE CASCADE
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE job_postings
     posted_date DATETIME,
 
     KEY idx_fk_employer_id (employer_id),
-    CONSTRAINT fk_job_postings_employer FOREIGN KEY (employer_id) REFERENCES employers (user_id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_job_postings_employer FOREIGN KEY (employer_id) REFERENCES employers (user_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE students
@@ -68,7 +68,7 @@ CREATE TABLE students
             ON UPDATE CASCADE,
     CONSTRAINT fk_students_user
         FOREIGN KEY (user_id) REFERENCES users (id)
-            ON DELETE RESTRICT
+            ON DELETE CASCADE
             ON UPDATE CASCADE
 );
 
@@ -78,7 +78,7 @@ CREATE TABLE advisors
     department VARCHAR(50) NOT NULL,
 
     KEY idx_fk_user_id (user_id),
-    CONSTRAINT fk_advisors_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_advisors_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE advisor_students
@@ -88,12 +88,12 @@ CREATE TABLE advisor_students
     PRIMARY KEY (advisor_id, student_id),
     CONSTRAINT fk_advisor_students_advisor
         FOREIGN KEY (advisor_id) REFERENCES advisors(user_id)
-            ON DELETE RESTRICT
+            ON DELETE CASCADE
             ON UPDATE CASCADE,
     CONSTRAINT fk_advisor_students_student
         FOREIGN KEY (student_id) REFERENCES students(user_id)
-            ON DELETE RESTRICT
-            ON UPDATE CASCADE
+            ON DELETE CASCADE
+            ON UPDATE CASCADE   
 );
 
 CREATE TABLE resumes
@@ -105,7 +105,7 @@ CREATE TABLE resumes
     KEY idx_fk_student_id (student_id),
     CONSTRAINT fk_resumes_student
         FOREIGN KEY (student_id) REFERENCES students (user_id)
-            ON DELETE RESTRICT
+            ON DELETE CASCADE
             ON UPDATE CASCADE
 );
 
@@ -122,11 +122,11 @@ CREATE TABLE resume_feedback
     KEY idx_fk_resume_id (resume_id),
     CONSTRAINT fk_resume_feedback_advisor
         FOREIGN KEY (advisor_id) REFERENCES advisors (user_id)
-            ON DELETE RESTRICT
+            ON DELETE CASCADE
             ON UPDATE CASCADE,
     CONSTRAINT fk_resume_feedback_resume
         FOREIGN KEY (resume_id) REFERENCES resumes (id)
-            ON DELETE RESTRICT
+            ON DELETE CASCADE
             ON UPDATE CASCADE
 );
 
@@ -136,8 +136,16 @@ CREATE TABLE student_skills
     student_id INT NOT NULL,
     skill_id   INT NOT NULL,
     PRIMARY KEY (student_id, skill_id),
-    FOREIGN KEY (student_id) REFERENCES students (user_id),
-    FOREIGN KEY (skill_id) REFERENCES skills (id)
+
+    CONSTRAINT fk_student_skills_student
+        FOREIGN KEY (student_id) REFERENCES students (user_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_student_skills_skill
+        FOREIGN KEY (skill_id) REFERENCES skills (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE job_posting_skills
@@ -145,8 +153,16 @@ CREATE TABLE job_posting_skills
     job_id   INT NOT NULL,
     skill_id INT NOT NULL,
     PRIMARY KEY (job_id, skill_id),
-    FOREIGN KEY (job_id) REFERENCES job_postings (id),
-    FOREIGN KEY (skill_id) REFERENCES skills (id)
+
+    CONSTRAINT fk_job_posting_skills_job
+        FOREIGN KEY (job_id) REFERENCES job_postings (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_job_posting_skills_skill
+        FOREIGN KEY (skill_id) REFERENCES skills (id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 CREATE TABLE applications
@@ -159,8 +175,8 @@ CREATE TABLE applications
 
     KEY idx_fk_student_id (student_id),
     KEY idx_fk_job_id (job_id),
-    CONSTRAINT fk_applications_student FOREIGN KEY (student_id) REFERENCES students (user_id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT fk_applications_job FOREIGN KEY (job_id) REFERENCES job_postings (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_applications_student FOREIGN KEY (student_id) REFERENCES students (user_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_applications_job FOREIGN KEY (job_id) REFERENCES job_postings (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE issue_reports
@@ -173,7 +189,7 @@ CREATE TABLE issue_reports
     description  VARCHAR(255),
 
     KEY idx_fk_user_id (user_id),
-    CONSTRAINT fk_issue_reports_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_issue_reports_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE admins
@@ -181,7 +197,7 @@ CREATE TABLE admins
     user_id INT PRIMARY KEY,
 
     KEY idx_fk_user_id (user_id),
-    CONSTRAINT fk_admins_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT fk_admins_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- DROP DATABASE SkillBridge
