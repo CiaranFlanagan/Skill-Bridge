@@ -45,6 +45,7 @@ if st.button('Act as Jayson, a Platform Admin',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'platform_admin'
     st.session_state['first_name'] = 'Alice'
+
     logger.info("Logging in as Platform Admin Persona")
     st.switch_page('pages/00_Pltfm_Admin_Home.py')
 
@@ -56,4 +57,11 @@ if st.button('Act as Sarah, a Career Advisor',
     st.session_state['first_name'] = 'Sarah'
     st.switch_page('pages/00_advisor.py')
 
+if st.button('Act as John, a Employer',
+             type = 'primary',
+             use_container_width=True):
+    st.session_state['authenticated'] = True
+    st.session_state['role'] = 'Employer'
+    st.session_state['first_name'] = 'John'
+    st.switch_page('pages/00_advisor.py')
 
