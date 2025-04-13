@@ -63,5 +63,5 @@ if st.button('Act as John, a Employer',
     st.session_state['authenticated'] = True
     st.session_state['role'] = 'Employer'
     st.session_state['first_name'] = 'John'
-    st.switch_page('pages/00_advisor.py')
+    st.switch_page('pages/00_employer.py')
 

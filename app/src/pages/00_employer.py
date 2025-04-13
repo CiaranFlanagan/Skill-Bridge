@@ -8,22 +8,22 @@ st.set_page_config(layout='wide')
 
 SideBarLinks()
 
-st.title(f"Welcome Platform Admin, {st.session_state['first_name']}.")
+st.title(f"Welcome Employer, {st.session_state['first_name']}.")
 st.write('')
 st.write('')
 st.write('### What would you like to do today?')
 
-if st.button('Go to User Management', 
+if st.button('Manage Job Postings', 
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/01_Usr_Mgmt.py')
+    st.switch_page('pages/01_employer_manage_jobs.py')
 
-if st.button('Go to Issue Report Tracker', 
+if st.button('Find and Filter Candidates', 
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/02_Issue_Report_Tracker.py')
+    st.switch_page('pages/02_employer_candidate_filter.py')
 
-if st.button('Go to Job Posting Review', 
+if st.button('Review Applications',
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/03_Job_Posting_Review.py')
+    st.switch_page('pages/03_employer_app_review.py')
