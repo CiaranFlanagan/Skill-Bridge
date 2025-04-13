@@ -22,40 +22,41 @@ else:
     st.warning("No users found")
     
 # add and delete user form
-st.subheader("➕ Add New User")
+with st.expander("➕ Add New User", expanded=False):
+    st.subheader("Add New User")
 
-with st.form("add_user_form", clear_on_submit=True):
-    col1, col2 = st.columns(2)
+    with st.form("add_user_form", clear_on_submit=True):
+        col1, col2 = st.columns(2)
 
-    with col1:
-        first_name = st.text_input("First Name")
-        email = st.text_input("Email")
-        role = st.selectbox("Role", ["student", "employer", "advisor", "admin"])
+        with col1:
+            first_name = st.text_input("First Name")
+            email = st.text_input("Email")
+            role = st.selectbox("Role", ["student", "employer", "advisor", "admin"])
 
-    with col2:
-        last_name = st.text_input("Last Name")
-        status = st.selectbox("Status", ["active", "inactive", "pending", "suspended"])
+        with col2:
+            last_name = st.text_input("Last Name")
+            status = st.selectbox("Status", ["active", "inactive", "pending", "suspended"])
 
-    submitted = st.form_submit_button("Add User")
+        submitted = st.form_submit_button("Add User")
 
-    if submitted:
-        if not all([first_name, last_name, email]):
-            st.error("Please fill out all fields.")
-        else:
-            response = requests.post("http://api:4000/u/users", json={
-                "first_name": first_name,
-                "last_name": last_name,
-                "email": email,
-                "role": role,
-                "status": status
-            })
-
-            if response.status_code == 201:
-                st.success("✅ User added successfully!")
-                st.rerun()
+        if submitted:
+            if not all([first_name, last_name, email]):
+                st.error("Please fill out all fields.")
             else:
-                st.error(f"❌ Failed to add user. Status code: {response.status_code}")
-                
+                response = requests.post("http://api:4000/u/users", json={
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "email": email,
+                    "role": role,
+                    "status": status
+                })
+
+                if response.status_code == 201:
+                    st.success("✅ User added successfully!")
+                    st.rerun()
+                else:
+                    st.error(f"❌ Failed to add user. Status code: {response.status_code}")
+                    
                 
 ### test the delete endpoint
 # res = requests.delete("http://api:4000/u/users/1")
@@ -65,6 +66,7 @@ with st.form("add_user_form", clear_on_submit=True):
   
                 
 #edit and delete users
+
 st.subheader("✏️ Edit or ❌ Delete Users")
 
 for _, row in users_df.iterrows():
@@ -124,4 +126,17 @@ if res.status_code == 200:
 else:
     st.error(f"Failed to fetch role breakdown. Status code: {res.status_code}")
 
-    
+#find users innactive for 6ht months 
+
+st.subheader("🛑 Inactive Users (No activity in 6+ months)")
+
+res = requests.get("http://api:4000/u/users/inactive")
+
+if res.status_code == 200:
+    inactive_df = pd.DataFrame(res.json())
+    if not inactive_df.empty:
+        st.dataframe(inactive_df)
+    else:
+        st.info("No inactive users found.")
+else:
+    st.error(f"Failed to fetch inactive users. Status code: {res.status_code}")
