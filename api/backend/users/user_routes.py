@@ -52,7 +52,7 @@ def update_user(id):
     '''
     cursor = db.get_db().cursor()
     cursor.execute(query, (data['first_name'], data['last_name'], data['email'], data['status'], data['role'], id))
-    db.get_db().commit()
+    db.get_db().commit()    
 
     the_response = make_response(jsonify({'message': f'User {id} updated successfully'}))
     the_response.status_code = 200
@@ -107,7 +107,7 @@ def get_users_inactive_by_activity():
         GROUP BY u.id
         HAVING 
             MAX(COALESCE(a.date_applied, '2000-01-01')) < NOW() - INTERVAL 6 MONTH
-            AND MAX(COALESCE(r.date_reported, '2000-01-01')) < NOW() - INTERVAL 6 MONTH
+            AND MAX(COALESCE(r.date_created, '2000-01-01')) < NOW() - INTERVAL 6 MONTH
     '''
 
     cursor = db.get_db().cursor()
