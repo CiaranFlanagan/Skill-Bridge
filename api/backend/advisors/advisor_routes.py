@@ -5,12 +5,21 @@ from backend.db_connection import db
 advisor_routes = Blueprint('advisor_routes', __name__)
 
 # GET /api/students - Get all students
-@advisor_routes.route('/advisor', methods=['GET'])
+@advisor_routes.route('/students', methods=['GET'])
 def get_students():
     current_app.logger.info('GET /students route')
     query = '''
-            SELECT user_id, major_id, grad_date, current_year, gpa, alumni
-            FROM students
+            SELECT u.id AS user_id,
+            u.first_name,
+            u.last_name,
+            m.name AS major_name,
+            s.grad_date, 
+            s.current_year, 
+            s.gpa, 
+            s.alumni
+            FROM students s
+            JOIN users u ON s.user_id = u.id
+            JOIN majors m ON m.id = s.major_id
             '''
     
     cursor = db.get_db().cursor()
@@ -57,7 +66,7 @@ def get_alumni_by_major(major_id):
     return response
 
 # GET /advisor/hire_frequency = Get frequency of hires by company
-@advisor_routes.route('/advisor/hire_frequency,' methods=['GET'])
+@advisor_routes.route('/advisor/hire-frequency', methods=['GET'])
 def get_hire_frequency():
     current_app.logger.info('GET /adbisor/hire-frequency route')
     query = '''
@@ -80,7 +89,7 @@ def get_hire_frequency():
 # GET /advisor/student_resume/<int:id> - Get student resume info
 @advisor_routes.route('advisor/student-resume/<int:id>', methods=['GET'])
 def get_student_resume(id):
-    current_app.logger.info(f'GET /advisor/student-resume/{id}' route)
+    current_app.logger.info(f'GET /advisor/student-resume/{id} route')
     query = '''
             SELECT r.file_name, rf.upload_date, r.resume
             FROM   resumes r
