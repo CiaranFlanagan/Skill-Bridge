@@ -26,3 +26,4 @@ if not reports_df.empty:
     st.dataframe(filtered_df[[
         "id", "type", "status", "date_created", "description", "first_name", "last_name", "email"
     ]])
+    
