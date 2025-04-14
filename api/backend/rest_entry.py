@@ -57,4 +57,3 @@ def create_app():
 
     # Don't forget to return the app object
     return app
-

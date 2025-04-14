@@ -21,3 +21,26 @@ def get_issue_reports():
     reports = cursor.fetchall()
 
     return make_response(jsonify(reports), 200)
+
+
+####
+# PUT /api/issue_reports/<id> – Update report status
+@issue_routes.route('/issue_reports/<int:id>', methods=['PUT'])
+def update_issue_status(id):
+    current_app.logger.info(f"PUT /issue_reports/{id}")
+    data = request.json
+    new_status = data.get('status')
+
+    if not new_status:
+        return make_response(jsonify({'error': 'Status is required'}), 400)
+
+    query = '''
+        UPDATE issue_reports
+        SET status = %s
+        WHERE id = %s
+    '''
+    cursor = db.get_db().cursor()
+    cursor.execute(query, (new_status, id))
+    db.get_db().commit()
+
+    return make_response(jsonify({'message': 'Status updated'}), 200)
