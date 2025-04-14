@@ -67,7 +67,7 @@ with st.expander("➕ Add New User", expanded=False):
                 
 #edit and delete users
 
-st.subheader("✏️ Edit or ❌ Delete Users")
+st.subheader("Edit or Delete Users")
 
 for _, row in users_df.iterrows():
     with st.expander(f"{row['first_name']} {row['last_name']} ({row['email']})", expanded=False):

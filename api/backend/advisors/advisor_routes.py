@@ -10,9 +10,10 @@ def get_students():
     current_app.logger.info('GET /students route')
     query = '''
             SELECT u.id AS user_id,
-            u.first_name,
+            u.first_name,   
             u.last_name,
             m.name AS major_name,
+            m.id AS major_id,
             s.grad_date, 
             s.current_year, 
             s.gpa, 
@@ -49,14 +50,15 @@ def delete_student(id):
 # GET /advisor/alumni/<major_id> - Get alumni matched by student major
 @advisor_routes.route('/advisor/alumni/<int:major_id>', methods=['GET'])
 def get_alumni_by_major(major_id):
-    current_app.logger.info(f'GET /advisor/alumni{major_id} route')
+    current_app.logger.info(f'GET /advisor/alumni/{major_id} route')
     query = '''
-            SELECT u.first_name, u.last_name, s.grad_Date, s.gpa
-            FROM   students s
-            JOIN   users u ON s.user_id = u.id
-            WHERE  s.major_id = %s 
-              AND  s.alumni = TRUE
-            '''
+    SELECT u.first_name, u.last_name, m.name AS major_name, s.grad_date
+    FROM   students s
+    JOIN   users u ON s.user_id = u.id
+    JOIN   majors m ON m.id = s.major_id
+    WHERE  s.alumni = TRUE AND s.major_id = %s
+    '''
+
     cursor = db.get_db().cursor()
     cursor.execute(query, (major_id,))
     alumni = cursor.fetchall()
@@ -68,9 +70,10 @@ def get_alumni_by_major(major_id):
 # GET /advisor/hire_frequency = Get frequency of hires by company
 @advisor_routes.route('/advisor/hire-frequency', methods=['GET'])
 def get_hire_frequency():
-    current_app.logger.info('GET /adbisor/hire-frequency route')
+    current_app.logger.info('GET /advisor/hire-frequency route')
     query = '''
-            SELECT e.company_name, COUNT(*) AS hire_count
+            SELECT e.company_name, 
+                   COUNT(*) AS hire_count
             FROM   applications a
             JOIN   job_postings jp ON jp.id = a.job_id
             JOIN   employer e ON e.user_id = jp.employer_id
@@ -80,12 +83,13 @@ def get_hire_frequency():
     
     cursor = db.get_db().cursor()
     cursor.execute(query)
-    frequency = cursor.fetchall()
+    rows = cursor.fetchall()
+    columns = [desc[0] for desc in cursor.description]
+    result = [dict(zip(columns, row)) for row in rows]
 
-    response = make_response(jsonify(frequency))
+    response = make_response(jsonify(result))
     response.status_code = 200
     return response
-
 # GET /advisor/student_resume/<int:id> - Get student resume info
 @advisor_routes.route('advisor/student-resume/<int:id>', methods=['GET'])
 def get_student_resume(id):
@@ -129,6 +133,35 @@ def add_feedback():
     response = make_response(jsonify({'Message:' 'Feedback Submitted Successfully'}))
     response.status_code = 201 # Created
     return response
+
+# All Advisors
+@advisor_routes.route('/advisor/all', methods=['GET'])
+def get_all_advisors():
+    cursor = db.get_db().cursor()
+    query = '''SELECT id, first_name, last_name FROM users WHERE role = 'advisor' '''
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    cols = [desc[0] for desc in cursor.description]
+    result = [dict(zip(cols, row)) for row in rows]
+    return jsonify(result)
+
+# ALL RESUMES
+@advisor_routes.route('/resumes/all', methods=['GET'])
+def get_all_resumes():
+    cursor = db.get_db().cursor()
+    query = '''
+            SELECT r.id,
+            u.first_name,
+            u.last_name        
+            FROM resumes r
+            JOIN students s ON r.student_id = s.user_id
+            JOIN users u ON s.user_id = u.id
+            '''
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    cols = [desc[0] for desc in cursor.description]
+    result = [dict(zip(cols, row)) for row in rows]
+    return jsonify(result)
 
 # GET /advisor/top-skills = Get top skills from all job postings
 @advisor_routes.route('/advisor/top-skills', methods=['GET'])
