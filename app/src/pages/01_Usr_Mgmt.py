@@ -69,7 +69,26 @@ with st.expander("➕ Add New User", expanded=False):
 
 st.subheader("✏️ Edit or ❌ Delete Users")
 
-for _, row in users_df.iterrows():
+search_user = st.text_input("Search User by ID")
+
+if search_user:
+    if search_user.isdigit():
+        result_df = users_df[users_df['id'] == int(search_user)]
+    else:
+        result_df = pd.DataFrame()
+else:
+    page_lim = 10
+    total_users = len(users_df)
+    num_pages = (total_users // page_lim)
+    if ((total_users % page_lim) > 0):
+        num_pages += 1
+
+    current_page = st.number_input("Page", min_value=1, max_value=num_pages, step=1, value=1)
+    start_user = (current_page - 1) * page_lim
+    end_user = start_user + page_lim
+    result_df = users_df.iloc[start_user:end_user]
+
+for _, row in result_df.iterrows():
     with st.expander(f"{row['first_name']} {row['last_name']} ({row['email']})", expanded=False):
         col1, col2 = st.columns([3, 1])
         

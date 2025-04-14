@@ -8,7 +8,7 @@ st.set_page_config(layout='wide')
 
 SideBarLinks()
 
-st.title(f"Welcome Platform Admin, {st.session_state['first_name']}.")
+st.title(f"Welcome Platform Admin, Jayson.")
 st.write('')
 st.write('')
 st.write('### What would you like to do today?')
