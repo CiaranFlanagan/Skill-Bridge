@@ -66,11 +66,7 @@ def get_alumni_by_major(major_id):
     return response
 
 # GET /advisor/hire_frequency = Get frequency of hires by company
-<<<<<<< HEAD
 @advisor_routes.route('/advisor/hire-frequency', methods=['GET'])
-=======
-@advisor_routes.route('/advisor/hire_frequency', methods=['GET'])
->>>>>>> 23010c4d569571197ca0cd8ad9d86a633d35239d
 def get_hire_frequency():
     current_app.logger.info('GET /adbisor/hire-frequency route')
     query = '''

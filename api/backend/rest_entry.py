@@ -56,6 +56,7 @@ def create_app():
     app.register_blueprint(user_routes, url_prefix='/u')
     app.register_blueprint(issue_routes, url_prefix='/ir')
     app.register_blueprint(advisor_routes, url_prefix='/s')
+    app.register_blueprint(employer_routes, url_prefix='/e')
 
     # Don't forget to return the app object
     return app
