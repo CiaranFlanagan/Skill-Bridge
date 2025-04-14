@@ -21,4 +21,19 @@ def get_students():
     the_response.status_code = 200
     return the_response
 
-
+# Update student info 
+@students.route('/students', methods=['PUT'])
+def update_student():
+    student_info = request.json
+    s.user_id = student_info
+    major_id = student_info['major_id']
+    grad_date = student_info['grad_date']
+    current_year = student_info['current_year']
+    gpa = student_info['gpa']
+    alumni = student_info['alumni']
+    query = 'UPDATE students SET major_id = %s, grad_date = %s, current_year = %s, gpa = %s, alumni = %s
+    data = (major_id, grad_date, current_year, gpa, alumni)
+    cursor = db.get_db().cursor()
+    r = cursor.execute(query, data)
+    db.get_db().commit()
+    return 'student updated!'
