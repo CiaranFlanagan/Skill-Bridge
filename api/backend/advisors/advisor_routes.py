@@ -80,7 +80,7 @@ def get_hire_frequency():
 # GET /advisor/student_resume/<int:id> - Get student resume info
 @advisor_routes.route('advisor/student-resume/<int:id>', methods=['GET'])
 def get_student_resume(id):
-    current_app.logger.info(f'GET /advisor/student-resume/{id}' route)
+    current_app.logger.info(f'GET /advisor/student-resume/{id}', route)
     query = '''
             SELECT r.file_name, rf.upload_date, r.resume
             FROM   resumes r
