@@ -1,6 +1,8 @@
 import streamlit as st
+import pandas as pd
+import requests
 
-st.set_page_config(layout='wide')
+st.title("🐞 Issue Report Tracker")
+st.write("Review and manage issue reports submitted by users.")
 
-st.title("Issue Report Tracker")
-st.write("This is the Issue Report Tracker feature page. Content coming soon!")
+
