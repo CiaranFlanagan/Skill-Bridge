@@ -22,6 +22,7 @@ if not students_df.empty:
 else:
     st.warning("No students found")
 
+
 # FIND ALUMNI
 ## IN PROGRESS
 for _, row in students_df.iterrows():
