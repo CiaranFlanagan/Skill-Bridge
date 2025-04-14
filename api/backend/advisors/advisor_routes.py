@@ -66,7 +66,11 @@ def get_alumni_by_major(major_id):
     return response
 
 # GET /advisor/hire_frequency = Get frequency of hires by company
+<<<<<<< HEAD
 @advisor_routes.route('/advisor/hire-frequency', methods=['GET'])
+=======
+@advisor_routes.route('/advisor/hire_frequency', methods=['GET'])
+>>>>>>> 23010c4d569571197ca0cd8ad9d86a633d35239d
 def get_hire_frequency():
     current_app.logger.info('GET /adbisor/hire-frequency route')
     query = '''
@@ -89,7 +93,11 @@ def get_hire_frequency():
 # GET /advisor/student_resume/<int:id> - Get student resume info
 @advisor_routes.route('advisor/student-resume/<int:id>', methods=['GET'])
 def get_student_resume(id):
+<<<<<<< HEAD
     current_app.logger.info(f'GET /advisor/student-resume/{id} route')
+=======
+    current_app.logger.info(f'GET /advisor/student-resume/{id}', route)
+>>>>>>> 23010c4d569571197ca0cd8ad9d86a633d35239d
     query = '''
             SELECT r.file_name, rf.upload_date, r.resume
             FROM   resumes r
