@@ -7,57 +7,54 @@ from backend.db_connection import db
 
 job_routes = Blueprint('job_routes', __name__)
 
-@job_routes.route('/jobs', methods=['GET'])
-def get_jobs():
-    current_app.logger.info('GET /jobs route')
-    status = request.args.get('status')
-    flagged = request.args.get('flagged')
-
+@job_routes.route('/job_postings', methods=['GET'])
+def get_all_job_postings():
+    current_app.logger.info("GET /job_postings")
     query = '''
-        SELECT id, employer_id, title, status, flagged, posted_date
-        FROM job_postings
-        WHERE (%s IS NULL OR status = %s)
-          AND (%s IS NULL OR flagged = %s)
-        ORDER BY posted_date DESC
+        SELECT jp.id, jp.title, jp.status, jp.flagged, jp.posted_date,
+               u.first_name, u.last_name, u.email, e.company_name
+        FROM job_postings jp
+        JOIN employers e ON jp.employer_id = e.user_id
+        JOIN users u ON e.user_id = u.id
     '''
     cursor = db.get_db().cursor()
-    cursor.execute(query, (status, status, flagged, flagged))
-    jobs = cursor.fetchall()
+    cursor.execute(query)
+    data = cursor.fetchall()
+    return make_response(jsonify(data), 200)
 
-    the_response = make_response(jsonify(jobs))
-    the_response.status_code = 200
-    return the_response
+@job_routes.route('/job_postings/<int:job_id>', methods=['PUT'])
+def update_job_posting(job_id):
+    current_app.logger.info(f"PUT /job_postings/{job_id}")
+    data = request.json
+    status = data.get('status')
+    flagged = data.get('flagged')
 
+    update_parts = []
+    values = []
 
-@job_routes.route('/jobs/<int:job_id>/flag', methods=['POST'])
-def flag_job_posting(job_id):
-    current_app.logger.info(f'POST /jobs/{job_id}/flag route')
+    if status is not None:
+        update_parts.append("status = %s")
+        values.append(status)
+    if flagged is not None:
+        update_parts.append("flagged = %s")
+        values.append(flagged)
 
-    query = '''
-        UPDATE job_postings
-        SET flagged = TRUE
-        WHERE id = %s
-    '''
+    if not update_parts:
+        return make_response(jsonify({"error": "No fields provided"}), 400)
+
+    values.append(job_id)
+    query = f"UPDATE job_postings SET {', '.join(update_parts)} WHERE id = %s"
+
     cursor = db.get_db().cursor()
-    cursor.execute(query, (job_id,))
+    cursor.execute(query, values)
     db.get_db().commit()
+    return make_response(jsonify({"message": "Job posting updated"}), 200)
 
-    the_response = make_response(jsonify({'message': f'Job posting {job_id} has been flagged.'}))
-    the_response.status_code = 200
-    return the_response
-
-@job_routes.route('/jobs/<int:job_id>', methods=['DELETE'])
+@job_routes.route('/job_postings/<int:job_id>', methods=['DELETE'])
 def delete_job_posting(job_id):
-    current_app.logger.info(f'DELETE /jobs/{job_id} route')
-
-    query = '''
-        DELETE FROM job_postings
-        WHERE id = %s
-    '''
+    current_app.logger.info(f"DELETE /job_postings/{job_id}")
+    query = "DELETE FROM job_postings WHERE id = %s"
     cursor = db.get_db().cursor()
     cursor.execute(query, (job_id,))
     db.get_db().commit()
-
-    the_response = make_response(jsonify({'message': f'Job posting {job_id} has been deleted.'}))
-    the_response.status_code = 200
-    return the_response
+    return make_response(jsonify({"message": "Job posting deleted"}), 200)
