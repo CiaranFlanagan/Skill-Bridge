@@ -90,6 +90,8 @@ def get_hire_frequency():
     response = make_response(jsonify(result))
     response.status_code = 200
     return response
+
+
 # GET /advisor/student_resume/<int:id> - Get student resume info
 @advisor_routes.route('advisor/student-resume/<int:id>', methods=['GET'])
 def get_student_resume(id):
@@ -116,7 +118,7 @@ def add_feedback():
     data = request.get_json()
 
     query = '''
-            INSERT INTO advisor_feedback (advisor_id, resume_id, upload_date, score, feedback)
+            INSERT INTO resume_feedback (advisor_id, resume_id, upload_date, score, feedback)
             VALUES (%s, %s, %s, %s, %s)
             '''    
     
@@ -130,20 +132,24 @@ def add_feedback():
     ))
     db.get_db().commit()
 
-    response = make_response(jsonify({'Message:' 'Feedback Submitted Successfully'}))
+    response = make_response(jsonify({'Message': 'Feedback Submitted Successfully'}))
     response.status_code = 201 # Created
     return response
-
+    
 # All Advisors
 @advisor_routes.route('/advisor/all', methods=['GET'])
 def get_all_advisors():
     cursor = db.get_db().cursor()
-    query = '''SELECT id, first_name, last_name FROM users WHERE role = 'advisor' '''
+    query = '''SELECT id, 
+                      first_name, 
+                      last_name 
+               FROM   users
+               WHERE  role = 'advisor' 
+            '''
     cursor.execute(query)
     rows = cursor.fetchall()
-    cols = [desc[0] for desc in cursor.description]
-    result = [dict(zip(cols, row)) for row in rows]
-    return jsonify(result)
+    response = make_response(jsonify(rows))
+    return response
 
 # ALL RESUMES
 @advisor_routes.route('/resumes/all', methods=['GET'])
@@ -159,9 +165,8 @@ def get_all_resumes():
             '''
     cursor.execute(query)
     rows = cursor.fetchall()
-    cols = [desc[0] for desc in cursor.description]
-    result = [dict(zip(cols, row)) for row in rows]
-    return jsonify(result)
+    response = make_response(jsonify(rows))
+    return response
 
 # GET /advisor/top-skills = Get top skills from all job postings
 @advisor_routes.route('/advisor/top-skills', methods=['GET'])

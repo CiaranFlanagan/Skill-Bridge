@@ -114,9 +114,9 @@ CREATE TABLE resume_feedback
     id          INT AUTO_INCREMENT PRIMARY KEY,
     advisor_id  INT      NOT NULL,
     resume_id   INT      NOT NULL,
-    upload_date DATETIME NOT NULL,
-    score       FLOAT    NOT NULL,
-    feedback    VARCHAR(255),
+    upload_date DATE     NOT NULL,
+    score       int      NOT NULL,
+    feedback    TEXT,
 
     KEY idx_fk_advisor_id (advisor_id),
     KEY idx_fk_resume_id (resume_id),

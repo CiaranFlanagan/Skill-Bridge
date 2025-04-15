@@ -22,7 +22,7 @@ if not students_df.empty:
 else:
     st.warning("No students found")
 
-st.title("🎓 Alumni by Major")
+st.title("Alumni by Major")
 
 # Create an empty list to store alumni rows
 alumni_rows = []
@@ -44,9 +44,6 @@ if alumni_rows:
     st.dataframe(alumni_df)
 else:
     st.warning("No Alumni found")
-
-
-
 
 
 # DELETE STUDENTS
