@@ -168,8 +168,10 @@ def get_all_resumes():
 def get_top_skills():
     current_app.logger.info('GET /advisor/top-skills route')
     query = '''
-            SELECT skill, COUNT(*) AS frequency
-            FROM   job_posting_skills
+            SELECT s.name, COUNT(*) AS frequency
+            FROM  job_posting jp
+            JOIN  job_posting_skills jps ON jp.id = jps.job_id
+            JOIN  skills s ON s.id = jps.skill_id
             GROUP BY skill
             ORDER BY frequency DESC
             LIMIT 10
