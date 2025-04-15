@@ -22,27 +22,29 @@ if not students_df.empty:
 else:
     st.warning("No students found")
 
-# FIND ALUMNI
-st.title("Alumni by Major")
+st.title("🎓 Alumni by Major")
 
 # Create an empty list to store alumni rows
 alumni_rows = []
 
-unique_majors = students_df['major_name'].unique()
+# Loop over major IDs — not names!
+unique_major_ids = students_df['major_id'].unique()
 
-for major_id in unique_majors:
-    res = requests.get(f"http://api:4000/advisor/alumni/{major_id}")
+for major_id in unique_major_ids:
+    res = requests.get(f"http://api:4000/s/advisor/alumni/{major_id}")
     if res.status_code == 200:
         alumni = res.json()
-        for alum in alumni:
-            alumni_rows.append(alum)
+        alumni_rows.extend(alumni)  # each alum already includes major_name
+    else:
+        st.warning(f"Failed to fetch alumni for major_id {major_id}")
 
+# Display final DataFrame
 if alumni_rows:
-    st.dataframe(unique_majors)
     alumni_df = pd.DataFrame(alumni_rows)
     st.dataframe(alumni_df)
 else:
     st.warning("No Alumni found")
+
 
 
 

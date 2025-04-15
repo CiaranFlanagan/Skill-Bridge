@@ -25,7 +25,7 @@ def top_skills():
         return pd.DataFrame(res.json())
     return pd.DataFrame()
 
-employers_df = fetch_employers()
+employers_df = top_skills()
 
 if not employers_df.empty:
     st.dataframe(employers_df)

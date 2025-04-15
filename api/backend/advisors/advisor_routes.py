@@ -76,7 +76,7 @@ def get_hire_frequency():
                    COUNT(*) AS hire_count
             FROM   applications a
             JOIN   job_postings jp ON jp.id = a.job_id
-            JOIN   employer e ON e.user_id = jp.employer_id
+            JOIN   employers e ON e.user_id = jp.employer_id
             GROUP BY e.company_name
             ORDER BY hire_count DESC
             '''
@@ -169,12 +169,12 @@ def get_top_skills():
     current_app.logger.info('GET /advisor/top-skills route')
     query = '''
             SELECT s.name, COUNT(*) AS frequency
-            FROM  job_posting jp
-            JOIN  job_posting_skills jps ON jp.id = jps.job_id
-            JOIN  skills s ON s.id = jps.skill_id
-            GROUP BY skill
-            ORDER BY frequency DESC
-            LIMIT 10
+            FROM   job_postings jp
+            JOIN   job_posting_skills jps ON jp.id = jps.job_id
+            JOIN   skills s ON s.id = jps.skill_id
+            GROUP  BY s.name
+            ORDER  BY frequency DESC
+            LIMIT  10
             '''
     cursor = db.get_db().cursor()
     cursor.execute(query)
