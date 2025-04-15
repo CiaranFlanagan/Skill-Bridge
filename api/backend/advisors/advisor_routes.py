@@ -17,10 +17,13 @@ def get_students():
             s.grad_date, 
             s.current_year, 
             s.gpa, 
-            s.alumni
+            s.alumni,
+            COUNT(a.id) AS application_count
             FROM students s
             JOIN users u ON s.user_id = u.id
             JOIN majors m ON m.id = s.major_id
+            JOIN applications a ON a.student_id = s.user_id
+            GROUP BY user_id
             '''
     
     cursor = db.get_db().cursor()
@@ -84,11 +87,7 @@ def get_hire_frequency():
     cursor = db.get_db().cursor()
     cursor.execute(query)
     rows = cursor.fetchall()
-    columns = [desc[0] for desc in cursor.description]
-    result = [dict(zip(columns, row)) for row in rows]
-
-    response = make_response(jsonify(result))
-    response.status_code = 200
+    response = make_response(jsonify(rows))
     return response
 
 

@@ -11,8 +11,11 @@ st.write('Manage your students on SkillBridge')
 
 def fetch_students():
     res = requests.get(f"http://api:4000/s/students")
+    column_order = ['user_id', 'first_name', 'last_name', 'application_count', 'major_id', 'major_name', 'gpa', 'grad_date']
     if res.status_code == 200:
-        return pd.DataFrame(res.json())
+        df = pd.DataFrame(res.json())
+        df = df[[col for col in column_order if col in df.columns]]
+        return df
     return pd.DataFrame()
 
 students_df = fetch_students()
@@ -41,6 +44,8 @@ for major_id in unique_major_ids:
 # Display final DataFrame
 if alumni_rows:
     alumni_df = pd.DataFrame(alumni_rows)
+    column_order = ["first_name", "last_name", "major_name", "grad_date"]
+    alumni_df = alumni_df[[col for col in column_order if col in alumni_df.columns]]
     st.dataframe(alumni_df)
 else:
     st.warning("No Alumni found")
