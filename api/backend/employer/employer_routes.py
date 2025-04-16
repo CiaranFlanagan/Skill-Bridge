@@ -10,7 +10,6 @@ employer_routes = Blueprint('employer_routes', __name__)
 def create_job_posting():
     current_app.logger.info('POST /job-postings route')
     data = request.get_json()
-
     query = '''
         INSERT INTO job_postings (employer_id, title, status, posted_date)
         VALUES (%s, %s, %s, NOW())
@@ -18,23 +17,41 @@ def create_job_posting():
     cursor = db.get_db().cursor()
     cursor.execute(query, (data['employer_id'], data['title'], data['status']))
     db.get_db().commit()
-
     response = make_response(jsonify({'message': 'Job posted successfully'}))
     response.status_code = 201
     return response
+
+# endpoint to get job postings for a given employer_id
+@employer_routes.route('/job-postings', methods=['GET'])
+def get_job_postings():
+    current_app.logger.info('GET /job-postings route')
+    employer_id = request.args.get('employer_id', type=int)
+    if not employer_id:
+        return make_response(jsonify({'error': 'Missing employer_id'}), 400)
+    try:
+        cursor = db.get_db().cursor()
+        query = '''
+            SELECT id, title, status, posted_date
+            FROM job_postings
+            WHERE employer_id = %s
+        '''
+        cursor.execute(query, (employer_id,))
+        jobs = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+        jobs = [dict(zip(columns, row)) for row in jobs]
+        return jsonify(jobs)
+    except Exception as e:
+        return make_response(jsonify({'error': str(e)}), 500)
 
 # endpoint for filtering students by major, skillset, and GPA
 @employer_routes.route('/filter-students', methods=['GET'])
 def filter_students():
     current_app.logger.info('GET /filter-students route')
-
     major = request.args.get('major')
     gpa = request.args.get('gpa', type=float)
     skills = request.args.getlist('skill')
-
     if not (major and gpa and skills):
         return make_response(jsonify({'error': 'Missing major, gpa, or skills'}), 400)
-
     placeholders = ', '.join(['%s'] * len(skills))
     query = f'''
         SELECT s.user_id, u.first_name, u.last_name, m.name AS major, s.gpa,
@@ -47,12 +64,12 @@ def filter_students():
         WHERE s.gpa >= %s AND m.name = %s AND sk.name IN ({placeholders})
         GROUP BY s.user_id, u.first_name, u.last_name, m.name, s.gpa
     '''
-
     cursor = db.get_db().cursor()
     params = [gpa, major] + skills
     cursor.execute(query, params)
     students = cursor.fetchall()
-
+    columns = [desc[0] for desc in cursor.description]
+    students = [dict(zip(columns, row)) for row in students]
     return jsonify(students)
 
 # endpoint to view a student's resume
@@ -123,3 +140,29 @@ def update_application_status(application_id):
     cursor.execute(query, (status, application_id))
     db.get_db().commit()
     return jsonify({'message': f'Application {status}'})
+
+# endpoint to get all applications for jobs posted by a given employer
+@employer_routes.route('/applications', methods=['GET'])
+def get_applications():
+    current_app.logger.info('GET /applications route')
+    employer_id = request.args.get('employer_id', type=int)
+    if not employer_id:
+        return make_response(jsonify({'error': 'Missing employer_id'}), 400)
+    try:
+        cursor = db.get_db().cursor()
+        query = '''
+            SELECT a.id AS id, a.student_id, a.job_id, a.status AS status, a.date_applied,
+                   CONCAT(u.first_name, ' ', u.last_name) AS student_name, j.title AS job_title
+            FROM applications a
+            JOIN students s ON a.student_id = s.user_id
+            JOIN users u ON s.user_id = u.id
+            JOIN job_postings j ON a.job_id = j.id
+            WHERE j.employer_id = %s
+        '''
+        cursor.execute(query, (employer_id,))
+        apps = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+        apps = [dict(zip(columns, row)) for row in apps]
+        return jsonify(apps)
+    except Exception as e:
+        return make_response(jsonify({'error': str(e)}), 500)
