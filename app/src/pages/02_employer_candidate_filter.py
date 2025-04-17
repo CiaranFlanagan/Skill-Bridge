@@ -52,8 +52,7 @@ def display_students(students):
             st.write(f"Major: {row['major_name'] if 'major_name' in row else row.get('major', '')}")
             st.write(f"GPA: {row['gpa']}")
             st.write(f"Skills: {row['skills']}")
-            resume_url = f"http://api:4000/e/students/{row['user_id']}/resume"
-            st.markdown(f"[Download Resume]({resume_url})")
+
 
 major, gpa, skills = get_user_input()
 if st.button("Search Candidates"):

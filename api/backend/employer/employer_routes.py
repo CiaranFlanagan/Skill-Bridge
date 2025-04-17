@@ -103,25 +103,8 @@ def filter_students():
     response.status_code = 200
     return response
 
-# endpoint to view a student's resume
-@employer_routes.route('/students/<int:student_id>/resume', methods=['GET'])
-def get_student_resume(student_id):
-    current_app.logger.info(f'GET /students/{student_id}/resume route')
-    query = '''
-        SELECT r.resume
-        FROM resumes r
-        WHERE r.student_id = %s
-    '''
-    db_cursor = db.get_db().cursor()
-    db_cursor.execute(query, (student_id,))
-    result = db_cursor.fetchall()
-    resume_bytes = result[0]['resume']
-    return send_file(
-        io.BytesIO(resume_bytes),
-        mimetype='application/pdf',
-        as_attachment=True,
-        download_name=f'resume_{student_id}.pdf'
-    )
+
+
 
 # endpoint to update a job posting
 @employer_routes.route('/job-postings/<int:job_id>', methods=['PUT'])
@@ -157,6 +140,26 @@ def mark_job_as_filled(job_id):
     response = make_response(jsonify({'message': 'Job marked as filled'}))
     response.status_code = 200
     return response
+
+# endpoint to get student resume
+@employer_routes.route('/students/<int:student_id>/resume', methods=['GET'])
+def get_student_resume(student_id):
+    current_app.logger.info(f'GET /students/{student_id}/resume route')
+    query = '''
+        SELECT r.resume
+        FROM resumes r
+        WHERE r.student_id = %s
+    '''
+    db_cursor = db.get_db().cursor()
+    db_cursor.execute(query, (student_id,))
+    result = db_cursor.fetchall()
+    resume_bytes = result[0]['resume']
+    return send_file(
+        io.BytesIO(resume_bytes),
+        mimetype='application/pdf',
+        as_attachment=True,
+        download_name=f'resume_{student_id}.pdf'
+    )
 
 # endpoint to approve or reject applications
 @employer_routes.route('/applications/<int:application_id>/status', methods=['PUT'])
