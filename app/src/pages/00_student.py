@@ -23,7 +23,7 @@ if st.button('Application Status',
              use_container_width=True):
     st.switch_page('pages/02_student_app_status.py')
 
-if st.button('Resume Upload',
+if st.button('Resume Help',
              type='primary',
              use_container_width=True):
     st.switch_page('pages/03_student_resume_upload.py')
