@@ -15,8 +15,8 @@ def get_students():
     cursor.execute('''SELECT user_id, major_id, grad_date, current_year, gpa, alumni
    FROM students 
     ''')
- theData = cursor.fetchall()
-    
+    theData = cursor.fetchall()
+
     the_response = make_response(jsonify(theData))
     the_response.status_code = 200
     return the_response
@@ -31,9 +31,30 @@ def update_student():
     current_year = student_info['current_year']
     gpa = student_info['gpa']
     alumni = student_info['alumni']
-    query = 'UPDATE students SET major_id = %s, grad_date = %s, current_year = %s, gpa = %s, alumni = %s
-    data = (major_id, grad_date, current_year, gpa, alumni)
+    query = '''UPDATE students SET major_id = %s, grad_date = %s, current_year = %s, gpa = %s, alumni = %s
+    WHERE user_id = %s'''
+    data = (major_id, grad_date, current_year, gpa, alumni, user_id)
     cursor = db.get_db().cursor()
     r = cursor.execute(query, data)
     db.get_db().commit()
     return 'student updated!'
+
+    # Get job recommendations 
+    @students.route('/students/recommended_jobs', methods=['GET'])
+def get_recommended_jobs(student_id):
+    cursor = db.get_db().cursor()
+
+    cursor.execute (''' SELECT DISTINCT p.id, jp.title, jp.posted_date, e.company_name 
+    FROM student_skills ss 
+    JOIN job_posting_skills jps ON ss.skill_id = jps.skill_id
+    JOIN job_postings jp ON jps.job_id = jp.id
+    JOIN employers e ON jp.employer_id = e.user_id
+    WHERE ss.student_id = %s
+    AND jp.status = 'active'
+    ORDER BY jp.posted_date DESC
+    LIMIT 10
+    ''')
+    cursor.execute(query, (student_id,))
+    jobs = cursor.fetchall()
+    return make_response(jsonify(jobs), 200)
+
