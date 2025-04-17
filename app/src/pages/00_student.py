@@ -18,7 +18,7 @@ if st.button('Job Dashboard',
              use_container_width=True):
     st.switch_page('pages/01_student_job_dashboard.py')
 
-if st.button('Application_Status', 
+if st.button('Application Status', 
              type='primary',
              use_container_width=True):
     st.switch_page('pages/02_student_app_status.py')
