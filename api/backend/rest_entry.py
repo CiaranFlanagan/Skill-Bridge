@@ -10,6 +10,7 @@ from backend.advisors.advisor_routes import advisor_routes
 from backend.employer.employer_routes import employer_routes
 from backend.issue_reports.issue_reports_routes import issue_routes
 from backend.advisors.advisor_routes import advisor_routes
+from backend.students.student_routes import students
 import os
 from dotenv import load_dotenv
 
@@ -57,6 +58,7 @@ def create_app():
     app.register_blueprint(issue_routes, url_prefix='/ir')
     app.register_blueprint(advisor_routes, url_prefix='/s')
     app.register_blueprint(employer_routes, url_prefix='/e')
+    app.register_blueprint(students, url_prefix='/stu')
 
     # Don't forget to return the app object
     return app
